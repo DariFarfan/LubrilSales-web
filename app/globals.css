@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #F5F5F5;
+  --color-foreground: #1A1A1A;
+  --color-primary: #E31837;
+  --color-primary-dark: #B5122B;
+  --color-primary-light: #FFF0F2;
+}
+
+:root {
+  --background: #F5F5F5;
+  --foreground: #1A1A1A;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}

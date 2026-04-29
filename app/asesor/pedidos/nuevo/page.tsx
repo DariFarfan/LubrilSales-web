@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft, Search, Plus, Minus, AlertTriangle, Check, Loader2, Pen, Trash2 } from 'lucide-react';
-import { MOCK_CLIENTS, MOCK_CATALOG } from '@/lib/mock-data';
+import { getClients, getCatalog } from '@/lib/db';
 import { useStore } from '@/lib/store';
 import { formatCurrency, calcOrderTotals } from '@/lib/utils';
 import type { Client, Product, OrderItem } from '@/lib/types';
@@ -19,6 +19,8 @@ function NewOrderContent() {
   const searchParams = useSearchParams();
   const { state, createOrder } = useStore();
 
+  const [clients, setClients] = useState<Client[]>([]);
+  const [catalog, setCatalog] = useState<Product[]>([]);
   const [step, setStep] = useState<Step>('client');
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -32,21 +34,29 @@ function NewOrderContent() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const isDrawing = useRef(false);
 
+  // Load clients and catalog from Supabase
+  useEffect(() => {
+    Promise.all([getClients(), getCatalog()])
+      .then(([c, p]) => { setClients(c); setCatalog(p); })
+      .catch(console.error);
+  }, []);
+
   // Pre-select client from query param
   useEffect(() => {
+    if (clients.length === 0) return;
     const cid = searchParams.get('clientId');
     if (cid) {
-      const client = MOCK_CLIENTS.find((c) => c.id === cid);
+      const client = clients.find((c) => c.id === cid);
       if (client) { setSelectedClient(client); setStep('items'); }
     }
-  }, [searchParams]);
+  }, [searchParams, clients]);
 
-  const filteredClients = MOCK_CLIENTS.filter((c) =>
+  const filteredClients = clients.filter((c) =>
     c.name.toLowerCase().includes(clientQuery.toLowerCase()) ||
     c.ruc.includes(clientQuery)
   );
 
-  const filteredCatalog = MOCK_CATALOG.filter((p) =>
+  const filteredCatalog = catalog.filter((p) =>
     p.name.toLowerCase().includes(catalogQuery.toLowerCase()) ||
     p.sku.toLowerCase().includes(catalogQuery.toLowerCase()) ||
     p.brand.toLowerCase().includes(catalogQuery.toLowerCase())

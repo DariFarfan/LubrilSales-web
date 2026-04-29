@@ -1,14 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Search, MapPin, Phone, Plus, Building2 } from 'lucide-react';
-import { MOCK_CLIENTS } from '@/lib/mock-data';
+import { Search, MapPin, Phone, Plus, Building2, Loader2 } from 'lucide-react';
+import { getClients } from '@/lib/db';
 import { formatDate } from '@/lib/utils';
+import type { Client } from '@/lib/types';
 
 export default function ClientsPage() {
+  const [clients, setClients] = useState<Client[]>([]);
+  const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState('');
-  const filtered = MOCK_CLIENTS.filter((c) =>
+
+  useEffect(() => {
+    getClients()
+      .then(setClients)
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, []);
+
+  const filtered = clients.filter((c) =>
     c.name.toLowerCase().includes(query.toLowerCase()) ||
     c.ruc.includes(query)
   );
@@ -30,7 +41,13 @@ export default function ClientsPage() {
       </div>
 
       <div className="px-4 py-3 space-y-2">
-        {filtered.map((client) => (
+        {loading && (
+          <div className="flex justify-center py-16 text-gray-400">
+            <Loader2 size={24} className="animate-spin" />
+          </div>
+        )}
+
+        {!loading && filtered.map((client) => (
           <div key={client.id} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center shrink-0">
@@ -61,10 +78,10 @@ export default function ClientsPage() {
           </div>
         ))}
 
-        {filtered.length === 0 && (
+        {!loading && filtered.length === 0 && (
           <div className="text-center py-12 text-gray-400">
             <Building2 size={32} className="mx-auto mb-2 opacity-40" />
-            <p className="text-sm">Sin resultados para &quot;{query}&quot;</p>
+            <p className="text-sm">{query ? `Sin resultados para "${query}"` : 'Sin clientes registrados'}</p>
           </div>
         )}
       </div>

@@ -1,7 +1,7 @@
 import type { Client, Product, Order, Advisor } from './types';
 
 export const MOCK_ADVISOR: Advisor = {
-  id: 'adv-007',
+  id: '00000000-0000-0000-0000-000000000007',
   name: 'Carlos Quispe',
   email: 'carlos.quispe@soltrak.com',
   zone: 'Lima Norte',

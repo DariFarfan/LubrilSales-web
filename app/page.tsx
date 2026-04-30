@@ -45,7 +45,7 @@ export default function RoleSelector() {
       </div>
 
       <p className="text-red-300 text-xs mt-12 text-center">
-        Chevron / Soltrak · UTEC Grupo 3 · Demo sin backend
+        Chevron / Soltrak · UTEC Grupo 3 · Demo
       </p>
     </div>
   );

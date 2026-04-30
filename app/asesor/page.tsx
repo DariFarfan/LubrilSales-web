@@ -19,6 +19,7 @@ export default function AdvisorHome() {
   if (!state.isAuthenticated) return null;
 
   const active = state.orders.filter((o) => isActiveStatus(o.status));
+  const rejected = state.orders.filter((o) => o.status === 'rejected').slice(0, 3);
   const delivered = state.orders.filter((o) => o.status === 'delivered').slice(0, 3);
 
   const counts = {
@@ -84,6 +85,21 @@ export default function AdvisorHome() {
             </div>
           )}
         </section>
+
+        {/* Rejected orders */}
+        {rejected.length > 0 && (
+          <section>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="font-semibold text-red-600 text-sm">Pedidos rechazados</h2>
+              <Link href="/asesor/pedidos" className="text-red-600 text-xs font-medium">Ver todos</Link>
+            </div>
+            <div className="space-y-2">
+              {rejected.map((order) => (
+                <OrderCard key={order.id} order={order} href={`/asesor/pedidos/${order.id}`} />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Recent deliveries */}
         {delivered.length > 0 && (

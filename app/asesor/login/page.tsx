@@ -13,7 +13,7 @@ export default function LoginPage() {
   const router = useRouter();
   const { setLoginEmail } = useStore();
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!email.includes('@')) {
       setError('Ingresa un correo válido');
@@ -22,10 +22,13 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
     setLoginEmail(email);
-    setTimeout(() => {
-      setLoading(false);
-      router.push('/asesor/login/otp');
-    }, 900);
+    await fetch('/api/send-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    }).catch(() => {});
+    setLoading(false);
+    router.push('/asesor/login/otp');
   }
 
   return (

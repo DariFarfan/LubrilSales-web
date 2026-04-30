@@ -108,7 +108,17 @@ export default function OtpPage() {
           {countdown > 0 ? (
             <p className="text-gray-500 text-sm">Reenviar código en {countdown}s</p>
           ) : (
-            <button className="text-red-600 text-sm font-medium" onClick={() => setCountdown(59)}>
+            <button
+              className="text-red-600 text-sm font-medium"
+              onClick={() => {
+                setCountdown(59);
+                fetch('/api/send-otp', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ email: state.loginEmail }),
+                }).catch(() => {});
+              }}
+            >
               Reenviar código
             </button>
           )}

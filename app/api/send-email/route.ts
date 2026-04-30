@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Order not found' }, { status: 404 });
   }
 
-  const client = order.client as { name: string; email: string } | null;
+  const client = order.client as unknown as { name: string; email: string } | null;
   if (!client?.email) {
     return NextResponse.json({ error: 'Client has no email' }, { status: 400 });
   }

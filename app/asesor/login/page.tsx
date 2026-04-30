@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Droplets, ArrowRight, Loader2 } from 'lucide-react';
+import Link from 'next/link';
+import { Droplets, ArrowRight, Loader2, ChevronLeft } from 'lucide-react';
 import { useStore } from '@/lib/store';
 
 export default function LoginPage() {
@@ -30,6 +31,9 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <div className="bg-red-600 px-6 pt-12 pb-8">
+        <Link href="/" className="inline-flex items-center gap-1 text-red-200 hover:text-white text-sm mb-4 transition-colors">
+          <ChevronLeft size={16} /> Volver
+        </Link>
         <div className="flex items-center gap-2 mb-2">
           <Droplets size={22} className="text-white" />
           <span className="text-white text-lg font-bold">LubriSales</span>

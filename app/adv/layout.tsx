@@ -19,7 +19,7 @@ export default function AdvLayout({ children }: { children: React.ReactNode }) {
             <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
               <span className="text-xs font-bold text-blue-700">RM</span>
             </div>
-            <Link href="/" className="text-xs text-gray-400 hover:text-gray-600 transition-colors hidden sm:block">
+            <Link href="/" className="text-xs text-gray-400 hover:text-gray-600 transition-colors">
               Salir
             </Link>
           </div>

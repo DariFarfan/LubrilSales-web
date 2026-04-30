@@ -3,13 +3,13 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Plus, Truck, Package, CheckCircle, RotateCcw, LogOut, Droplets } from 'lucide-react';
+import { Plus, Truck, Package, CheckCircle, RotateCcw, LogOut, Droplets, RefreshCw } from 'lucide-react';
 import { useStore } from '@/lib/store';
 import OrderCard from '@/components/OrderCard';
 import { isActiveStatus } from '@/lib/utils';
 
 export default function AdvisorHome() {
-  const { state, logout } = useStore();
+  const { state, logout, reload } = useStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -41,9 +41,14 @@ export default function AdvisorHome() {
             <Droplets size={20} className="text-white" />
             <span className="text-white font-bold text-base">LubriSales</span>
           </div>
-          <button onClick={handleLogout} className="text-red-200 p-1">
-            <LogOut size={18} />
-          </button>
+          <div className="flex items-center gap-2">
+            <button onClick={() => reload()} disabled={state.isLoading} className="text-red-200 p-1 disabled:opacity-50">
+              <RefreshCw size={18} className={state.isLoading ? 'animate-spin' : ''} />
+            </button>
+            <button onClick={handleLogout} className="text-red-200 p-1">
+              <LogOut size={18} />
+            </button>
+          </div>
         </div>
         <p className="text-red-200 text-xs">Buenos días,</p>
         <h1 className="text-white text-xl font-bold">{state.currentAdvisor?.name}</h1>

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Search, AlertTriangle, Package, CheckCircle, XCircle, Truck, Clock } from 'lucide-react';
+import { Search, AlertTriangle, Package, CheckCircle, XCircle, Truck, Clock, RefreshCw } from 'lucide-react';
 import { useStore } from '@/lib/store';
 import StatusBadge from '@/components/StatusBadge';
 import { formatCurrency, formatDateTime, isActiveStatus } from '@/lib/utils';
@@ -11,7 +11,7 @@ import type { OrderStatus } from '@/lib/types';
 type Filter = 'todos' | 'synced' | 'validated' | 'in_sap' | 'dispatched' | 'delivered' | 'rejected';
 
 export default function AdvDashboard() {
-  const { state } = useStore();
+  const { state, reload } = useStore();
   const [filter, setFilter] = useState<Filter>('todos');
   const [query, setQuery] = useState('');
 
@@ -45,7 +45,13 @@ export default function AdvDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Pedidos</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-gray-900">Pedidos</h1>
+          <button onClick={() => reload()} disabled={state.isLoading} className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 disabled:opacity-50 transition-colors">
+            <RefreshCw size={15} className={state.isLoading ? 'animate-spin' : ''} />
+            Refrescar
+          </button>
+        </div>
         <p className="text-sm text-gray-500 mt-1">Gestiona y valida los pedidos de los asesores</p>
       </div>
 

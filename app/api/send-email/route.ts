@@ -101,7 +101,7 @@ export async function POST(req: NextRequest) {
             <p style="margin:2px 0 0;font-size:12px;color:#FCA5A5">Sistema de Gestión de Pedidos · Soltrak</p>
           </td>
           <td style="text-align:right">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Chevron_Corporation_Logo.svg/120px-Chevron_Corporation_Logo.svg.png" alt="Chevron" height="28" style="opacity:0.9" />
+            <img src="https://w7.pngwing.com/pngs/854/574/png-transparent-chevron-corporation-filling-station-gasoline-logo-chevron-blue-angle-text-thumbnail.png" alt="Chevron" height="32" style="display:block" />
           </td>
         </tr>
       </table>

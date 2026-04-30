@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Smartphone, Monitor, Droplets } from 'lucide-react';
+import { Smartphone, Monitor, Droplets, Truck } from 'lucide-react';
 
 export default function RoleSelector() {
   return (
@@ -39,6 +39,20 @@ export default function RoleSelector() {
           <div className="flex-1">
             <p className="font-semibold text-gray-900 text-base">Panel ADV</p>
             <p className="text-sm text-gray-500">Valida pedidos y gestiona el flujo</p>
+          </div>
+          <span className="text-gray-400 text-lg">›</span>
+        </Link>
+
+        <Link
+          href="/operaciones"
+          className="flex items-center gap-4 bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all active:scale-[0.98] group"
+        >
+          <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center group-hover:bg-orange-100 transition-colors">
+            <Truck size={24} className="text-orange-600" />
+          </div>
+          <div className="flex-1">
+            <p className="font-semibold text-gray-900 text-base">Despacho y Entrega</p>
+            <p className="text-sm text-gray-500">Gestiona despachos y confirma entregas</p>
           </div>
           <span className="text-gray-400 text-lg">›</span>
         </Link>

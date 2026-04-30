@@ -177,6 +177,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         };
         dispatch({ type: 'ADD_NOTIFICATION', payload: notif });
         insertNotification(id, 'synced', notif.title, notif.body);
+        fetch('/api/send-email', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ orderId: id, status: 'synced' }) }).catch(() => {});
       })
       .catch((err) => console.error('Error syncing order:', err));
 
@@ -195,6 +196,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         const sapNum = `450008${Math.floor(Math.random() * 9000) + 1000}`;
         dispatch({ type: 'UPDATE_ORDER_STATUS', payload: { id, status: 'in_sap', extra: { sapOrderNumber: sapNum } } });
         pushStatus(id, 'in_sap', 'En preparación SAP', `SAP #${sapNum}`, { sap_order_number: sapNum });
+        fetch('/api/send-email', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ orderId: id, status: 'in_sap' }) }).catch(() => {});
       }, 3000);
     }, 2000);
   }, []);
@@ -207,11 +209,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const markDispatched = useCallback((id: string) => {
     dispatch({ type: 'UPDATE_ORDER_STATUS', payload: { id, status: 'dispatched' } });
     pushStatus(id, 'dispatched', 'En camino');
+    fetch('/api/send-email', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ orderId: id, status: 'dispatched' }) }).catch(() => {});
   }, []);
 
   const markDelivered = useCallback((id: string) => {
     dispatch({ type: 'UPDATE_ORDER_STATUS', payload: { id, status: 'delivered' } });
     pushStatus(id, 'delivered', 'Entregado');
+    fetch('/api/send-email', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ orderId: id, status: 'delivered' }) }).catch(() => {});
   }, []);
 
   const markNotificationRead = useCallback((id: string) => {

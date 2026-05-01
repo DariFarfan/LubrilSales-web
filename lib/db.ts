@@ -126,6 +126,29 @@ export async function getClients(): Promise<Client[]> {
   }));
 }
 
+export async function insertClient(data: Omit<Client, 'id' | 'lastOrderDate'>): Promise<Client> {
+  const { data: row, error } = await supabase
+    .from('clients')
+    .insert({ name: data.name, ruc: data.ruc, address: data.address, email: data.email || null, phone: data.phone || null, zone: data.zone })
+    .select()
+    .single();
+  if (error) throw error;
+  return { id: row.id, name: row.name, ruc: row.ruc, address: row.address, email: row.email ?? '', phone: row.phone ?? '', zone: row.zone };
+}
+
+export async function updateClient(id: string, data: Partial<Omit<Client, 'id' | 'lastOrderDate'>>): Promise<void> {
+  const { error } = await supabase
+    .from('clients')
+    .update({ name: data.name, ruc: data.ruc, address: data.address, email: data.email || null, phone: data.phone || null, zone: data.zone })
+    .eq('id', id);
+  if (error) throw error;
+}
+
+export async function deleteClient(id: string): Promise<void> {
+  const { error } = await supabase.from('clients').update({ active: false }).eq('id', id);
+  if (error) throw error;
+}
+
 export async function getCatalog(): Promise<Product[]> {
   const { data, error } = await supabase
     .from('products')
